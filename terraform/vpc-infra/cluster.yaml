@@ -1,0 +1,85 @@
+#install kubernetes
+#update and upgrade
+
+# set hostname in control server
+sudo hostnamectl set-hostname k8s-control
+sudo hostnamectl set-hostname k8s-worker1
+sudo hostnamectl set-hostname k8s-worker2
+
+# edit hosts
+#/etc/hosts 
+
+# in contol-> put internal ip of workers
+10.0.2.34 k8s-worker1
+10.0.2.34 k8s-worker2
+10.0.2.95 k8s-control
+
+# copy same to other workers too
+
+
+# library on 3 server
+cat <<EOF |sudo tee /etc/modules-load.d/containerd.conf 
+>overlay
+>br_netfilter
+?EOF
+
+# restart system services to install these execute on 3 services
+ sudo modeprobe overlay
+ sudo modeprobe br_netfilter
+
+ # tehn on 3 server
+ cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+ >net.bridge.bridge-nf-call-iptables=1
+>net.ipv4.ip_forward=1
+>net.bridge.bridge-nf-call-ip6tables=1
+>EOF
+
+on all server sudo apt-get update
+install curl
+ca-certificates
+gnupg
+# contanerd 
+echo \
+> "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+>"$(. /etc/os-release && echo "$VERSION_CODENAME")" stable"| \
+>sudo tee /etc/apt/source.list.d/docker.list> /dev/null 
+
+# install containerd 
+sudo apt-get update
+sudo apt-get install -y containerd.io
+sudo mkdir -p /etc/containerd 
+sudo containerd config default | sudo tee /etc/containerd/config.toml
+
+sudo swapoff -a
+
+sudo systemctl restart containerd
+
+
+curl -s https://packages.cloud.google.com/doc/apt-key.gpg |sudo apt-key add -
+
+sudo  tee <<EOF |sudo tee /etc/apt/sources.list.d/kubernetes.list
+>deb https://apt.kubernetes.io/kubernetes-xenial main
+EOF
+
+
+sudo apt-get update
+
+
+sudo apt-install -y kublet kubeadm kubectl
+
+# control versioning hold update until manualy
+sudo apt-mark hold kubectl kubeadm kubelet
+
+sudo sysctl --system
+
+sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --kubernetes version 1.24.0
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+# networking extension
+kubectl apply -f calico
+
+kubeadm token create --print-join-command

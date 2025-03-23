@@ -1,0 +1,26 @@
+name: Infrastructure destroy pipeline
+on: 
+  workflow_dispatch:
+jobs:
+  DEV: 
+    runs-on: X64
+    steps:
+      - name: Import secrets hashicorp 
+        uses: hashicorp/vault-action@v2.4.0
+        with: 
+          url: ${{secrets.VAULT_SERVER}}
+          token: ${{secrets.VAULT_TOKEN}}
+          tlsSkipVerify: true  #add to runner later /usr/local/share/ca-certificates/vault-ca.crt
+          secrets: | 
+            tools/data/aws aws_user | AWS_USER;   
+            tools/data/aws aws_password |AWS_PASSWORD 
+      - name: Destroying the Infrastructure
+        run: |
+          ls -la 
+          cd tools-infra ; cd  terraform ; terraform destroy -auto-approve
+        env: 
+          TF_VAR_aws_user: ${{secrets.AWS_USER}}
+          TF_VAR_aws_password: ${{secrets.AWS_PASSWORD}}
+          
+
+        
