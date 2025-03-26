@@ -22,6 +22,17 @@ ingress {
       cidr_blocks   = [tostring(data.aws_subnet.kube_subnet.cidr_block) ]#var.kube_subnet_cidr data.aws_subnet.kube_subnet.cidr_block
     }
   }
+# dynamic egress
+dynamic "egress" {
+  for_each = var.cp_egress
+  content {
+    from_port   = tonumber(split("-",egress.value.port)[0])
+    to_port     = tonumber(split("-",egress.value.port)[length(split("-",egress.value.port))-1])
+    protocol    = "TCP"
+    cidr_blocks = [tostring(data.aws_subnet.kube_subnet.cidr_block)] 
+  }
+}
+
 # TCP	Inbound	6443	    Kubernetes API server	    All
 # TCP	Inbound	2379-2380	etcd server client API	    kube-apiserver, etcd
 # TCP	Inbound	10250	    Kubelet API	                Self, Control plane
