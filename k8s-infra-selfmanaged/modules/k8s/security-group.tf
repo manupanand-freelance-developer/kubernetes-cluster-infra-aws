@@ -19,7 +19,7 @@ ingress {
       from_port     = tonumber(split("-",ingress.value.port)[0])
       to_port       = tonumber(split("-",ingress.value.port)[length(split("-",ingress.value.port))-1])
       protocol      = "TCP"
-      cidr_blocks   = data.aws_subnet.kube_subnet.cidr_block #var.kube_subnet_cidr data.aws_subnet.kube_subnet.cidr_block
+      cidr_blocks   = [tostring(data.aws_subnet.kube_subnet.cidr_block) ]#var.kube_subnet_cidr data.aws_subnet.kube_subnet.cidr_block
     }
   }
 # TCP	Inbound	6443	    Kubernetes API server	    All
