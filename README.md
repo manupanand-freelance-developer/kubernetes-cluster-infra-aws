@@ -3,7 +3,7 @@
  Resources in this project are mainly created on AWS cloud provider
 
 
-# Kubernetes cluster Infra
+# Kubernetes cluster VPC Infra
 
 ![Kubernetes vpc infra](https://github.com/manupanand-freelance-developer/aws-devops/blob/main/images/kube-cluster.png) 
 
