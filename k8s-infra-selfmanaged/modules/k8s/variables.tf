@@ -13,6 +13,6 @@ variable "cp_ingress" {
 variable "cp_egress" {
   
 }
-variable "kube_subnet_cidr" {
-  default = [for s in data.aws_subnet.kube_subnet : s.cidr_block]
-}
+# variable "kube_subnet_cidr" {
+#   default = [for s in data.aws_subnet.kube_subnet : s.cidr_block]
+# }
