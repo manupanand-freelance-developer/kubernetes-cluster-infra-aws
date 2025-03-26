@@ -1,7 +1,7 @@
-data "aws_subnet" "test" {
+data "aws_subnet" "kube_subnet" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.test.id]
+    values = [data.aws_vpc.private_vpc.id]
   }
   filter{
     name ="tag:Name"
@@ -9,7 +9,7 @@ data "aws_subnet" "test" {
   }
 }
 
-data "aws_vpc" "test" {
+data "aws_vpc" "private_vpc" {
     
   filter {
     name = "tag:Name"

@@ -3,4 +3,6 @@ module "kube" {
   env               = var.env
   vpc_name          = var.vpc["vpc_name"]
   subnet_name       = var.vpc["subnet_name"] 
+  cp_ingress        = var.cp_ingress
+  cp_egress         = var.cp_egress
 }
