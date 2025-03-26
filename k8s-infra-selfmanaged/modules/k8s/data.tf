@@ -1,16 +1,16 @@
 data "aws_subnets" "test" {
   filter {
-    name   = "dev-kube-subnet"
+    name   = "vpc-id"
     values = [data.aws_vpc.test.id]
     
   }
 }
 
 data "aws_vpc" "test" {
-    cidr_block = "10.10.0.0/16"
+    
   filter {
-    name = "dev-vpc-private"
-    values = []
+    name = "tag:Name"
+    values = ["dev-vpc-private"]
   }
 }
 
