@@ -9,3 +9,39 @@
   ansible.builtin.include_role:  
     name: common 
     tasks_from: common
+
+# write fire wall here
+
+- name: Enable ports using firewalld
+  ansible.builtin.shell: "firewall-cmd --zone=trusted --add-port={{ item }}/tcp --permanent && firewall-cmd --reload"
+  loop: 
+    - 22 # ssh 
+    - 443 #https
+    - 10250    # kubelet
+    - 10256 #kube-scheduler
+   
+- name: Enable port range - 30000-32767 node port
+  ansible.builtin.shell: "firewall-cmd --zone=trusted --add-port=30000-32767/tcp --permanent && firewall-cmd --reload" 
+
+
+- name: Enable firewalld
+  ansible.builtin.systemd_service:
+     name: firewalld
+     state: restarted
+     enabled: true
+
+- name: Enable Containerd
+  ansible.builtin.systemd_service:
+     name: containerd
+     state: restarted
+     enabled: true
+
+- name: Restart kubelet 
+  ansible.builtin.systemd_service: 
+    name: kubelet 
+    state: restarted 
+    enabled: true 
+    daemon_reload: true 
+
+
+# git pull;ansible-playbook -i localhost, -e ansible_user=ec2-user -e ansible_password=aws@SECAPPLY2025 -e role_name=control-plane  playbook.yml    -vv

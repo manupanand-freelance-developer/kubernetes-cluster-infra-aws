@@ -23,7 +23,26 @@
     - 10259 #kube-scheduler
     - 10257 #kube-control-manger
 - name: Enable port range - 2379-2380 etcd
-  ansible.builtin.shell: "firewall-cmd --zone=trusted --add-port=2379-2380/tcp --permanent && firewall-cmd --reload"
+  ansible.builtin.shell: "firewall-cmd --zone=trusted --add-port=2379-2380/tcp --permanent && firewall-cmd --reload" 
+
+- name: Enable firewalld
+  ansible.builtin.systemd_service:
+     name: firewalld
+     state: restarted
+     enabled: true
+
+- name: Enable Containerd
+  ansible.builtin.systemd_service:
+     name: containerd
+     state: restarted
+     enabled: true
+
+- name: Restart kubelet 
+  ansible.builtin.systemd_service: 
+    name: kubelet 
+    state: restarted 
+    enabled: true 
+    daemon_reload: true 
       
 #############################################################
 # disable swap |disk partition
@@ -39,9 +58,14 @@
   ansible.builtin.unarchive: 
    src: https://github.com/derailed/k9s/releases/download/v0.40.10/k9s_Linux_amd64.tar.gz
    dest: "/usr/local/bin/"
-   mode: '0744'
    remote_src: true
   
+- name: Set correct permissions for K9s binary
+  ansible.builtin.file:
+    path: /usr/local/bin/k9s
+    mode: '0755'
+    owner: root
+    group: root
 
 - name: Get IP address 
   ansible.builtin.shell:  hostname -I | awk '{print $1}' 
@@ -63,11 +87,15 @@
     mode: '0660'
   
 
-- name: Run kube configuration
-  ansible.builtin.shell: | 
-    mkdir -p $HOME/.kube
-    cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-    chown $(id -u):$(id -g) $HOME/.kube/config 
+- name: Set up kubeconfig for ec2-user
+  ansible.builtin.shell: |
+    mkdir -p ~/.kube
+    cp -i /etc/kubernetes/admin.conf ~/.kube/config
+    chown $(id -u):$(id -g) ~/.kube/config
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: ec2-user
 
 - name: Install Calico 
   ansible.builtin.shell: |
