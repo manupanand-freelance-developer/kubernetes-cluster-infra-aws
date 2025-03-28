@@ -7,44 +7,51 @@
 ######################################################################################################
 
 - name: Setting prompt name
-  ansible.builtin.lineinfile: 
+  ansible.builtin.lineinfile:
      path: "/home/ec2-user/.bashrc"
      line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
-     create: true 
+     create: true
      mode: '0644'
 
-- name: Source bashrc 
+- name: Source bashrc
   ansible.builtin.shell: |
-      source ~/.bashrc 
-  args: 
-   executable:  /bin/bash 
+      source ~/.bashrc
+  args:
+   executable:  /bin/bash
 
 - name: Install firewalld  and rsyslog
-  ansible.builtin.dnf: 
-    name:  
-      - firewalld 
+  ansible.builtin.dnf:
+    name: 
+      - firewalld
       - rsyslog
-    state: latest 
+    state: latest
 
-- name: Enable firewalld 
-  ansible.builtin.systemd_service: 
-     name: firewalld 
-     state: restarted 
-     enabled: true 
+- name: Enable firewalld
+  ansible.builtin.systemd_service:
+     name: firewalld
+     state: restarted
+     enabled: true
 
 - name: Enable ports using firewalld
   ansible.posix.firewalld:
-    port: "{{ item }}"
-    state: enabled 
+    port:
+      - "22/tcp" # ssh 
+      - "443/tcp" #https
+      - "6443/tcp" #kubeapiserver
+      - "2379-2380/tcp" #etcd
+      - "10250/tcp"    # kubelet
+      - "10259/tcp"  #kube-scheduler
+      - "10257/tcp" #kube-control-manger
+    state: enabled
     permanent: true
-  loop: 
-    - "22/tcp" # ssh 
-    - "443/tcp" #https
-    - "6443/tcp" #kubeapiserver
-    - "2379-2380/tcp" #etcd
-    - "10250/tcp"    # kubelet
-    - "10259/tcp"  #kube-scheduler
-    - "10257/tcp" #kube-control-manger
+  # loop: 
+  #   - "22/tcp" # ssh 
+  #   - "443/tcp" #https
+  #   - "6443/tcp" #kubeapiserver
+  #   - "2379-2380/tcp" #etcd
+  #   - "10250/tcp"    # kubelet
+  #   - "10259/tcp"  #kube-scheduler
+  #   - "10257/tcp" #kube-control-manger
 
 #############################################################
 # disable swap |disk partition
