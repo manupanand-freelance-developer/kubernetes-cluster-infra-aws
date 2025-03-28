@@ -1,0 +1,95 @@
+###########################################################################
+#  Author : MANU P ANAND : email:manupanand@outlook.com
+############################################################################
+
+
+- name: Setting prompt name
+  ansible.builtin.lineinfile: 
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{role_name}}\[\e[0m\] \w \$ "'
+     create: true 
+     mode: '0644'
+
+- name: Source bashrc 
+  ansible.builtin.shell: |
+      source ~/.bashrc 
+  args: 
+   executable:  /bin/bash 
+
+- name: Install firewalld  and rsyslog
+  ansible.builtin.dnf: 
+    name:  
+      - firewalld 
+      - rsyslog
+    state: latest 
+
+
+- name: Enable firewalld 
+  ansible.builtin.systemd_service: 
+     name: firewalld 
+     state: restarted 
+     enabled: true 
+
+- name: Enable ports using firewalld 
+  ansible.posix.firewalld: 
+     port: "{{item}}"
+     state: enabled 
+     permanent: true
+  loop: 
+     - "22/tcp" # ssh 
+     - "443/tcp" #https
+     - "10250/tcp"    # kubelet_api
+     - "10256/tcp"  #kube_proxy
+     - "30000-32767/tcp" #30000-32767  
+
+- name: Disable Swap 
+  ansible.builtin.shell: | 
+     swapoff -a 
+
+- name: Create log file 
+  ansible.builtin.file: 
+    path: /var/log/disableswap.log 
+    owner: root 
+    group: root 
+    mode : '0644'
+
+- name:  Copy swapoff service file for permanent disable swap 
+  ansible.builtin.template: 
+    src: disableswap.service 
+    dest: /etc/systemd/system/disableswap.service 
+    owner:  root 
+    group: root 
+    mode: "0644"
+ 
+- name: Enable disableswap| firewall| rsyslog service 
+  ansible.builtin.systemd_service: 
+    name: "{{item}}"
+    state: restarted 
+    enabled: true 
+    daemon_reload: true 
+  loop: 
+     - disableswap 
+     - firewalld 
+     - rsyslog 
+
+- name: Copy k8s config to modules-load.d 
+  ansible.builtin.template: 
+    src: k8s.conf 
+    dest: /etc/modules-load.d/k8s.conf 
+    owner: root 
+    group: root 
+    mode: '0644' 
+
+- name: Copy k8s config to sysctl 
+  ansible.builtin.template: 
+     src: k8ss.conf 
+     dest: /etc/sysctl.d/k8ss.conf
+     owner: root 
+     group: root 
+     mode: '0644' 
+# forwarding ip4 and letting ip tables to see bridged traffic
+- name: Run modprobe and sysctl 
+  ansible.builtin.shell: | 
+    modprobe overlay
+    modprobe br_netfilter
+    sysctl --system 

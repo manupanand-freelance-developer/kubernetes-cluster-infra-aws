@@ -13,6 +13,9 @@ variable "cp_ingress" {
 variable "cp_egress" {
   
 }
-# variable "kube_subnet_cidr" {
-#   default =  
-# }
+variable "worker_ingress" {
+  
+}
+variable "worker_egress" {
+  
+}

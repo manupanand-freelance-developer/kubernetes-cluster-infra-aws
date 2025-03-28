@@ -1,0 +1,5 @@
+name: Configure dependencies for Kubernetes 
+host: all 
+become:  true 
+roles: 
+  - "{{role_name}}"
