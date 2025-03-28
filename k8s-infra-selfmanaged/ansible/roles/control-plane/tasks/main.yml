@@ -132,6 +132,9 @@
   ansible.builtin.copy: 
     src: /tmp/bin
     dest: /home/ec2-user/ermo 
+    owner: root 
+    group: root 
+    mode: '0744'
 
 
 - name: Copy containerd service 
