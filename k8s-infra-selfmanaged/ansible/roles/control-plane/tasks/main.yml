@@ -79,7 +79,7 @@
     owner:  root 
     group: root 
     mode: "0644"
-    remote_src: true
+    
   
 - name: Enable disableswap| firewall| rsyslog service 
   ansible.builtin.systemd_service: 
@@ -99,7 +99,7 @@
     owner: root 
     group: root 
     mode: '0644' 
-    remote_src: true
+    
 
 - name: Copy k8s config to sysctl 
   ansible.builtin.copy: 
@@ -108,7 +108,7 @@
      owner: root 
      group: root 
      mode: '0644'
-     remote_src: true 
+      
 # forwarding ip4 and letting ip tables to see bridged traffic
 - name: Run modprobe and sysctl 
   ansible.builtin.shell: | 
@@ -144,7 +144,7 @@
     dest: /etc/systemd/system/containerd.service 
     owner: root 
     group: root 
-    remote_src: true
+    
 
 - name: create containerd folder /etc/containerd
   ansible.builtin.file: 
@@ -161,7 +161,7 @@
     owner: root 
     group: root 
     mode: '0644' 
-    remote_src: true
+    
 
 - name: Start and enable containerd service
   ansible.builtin.systemd_service: 
@@ -190,7 +190,7 @@
     owner: root 
     group: root 
     mode: '0644' 
-    remote_src: true 
+    
 
 - name: Make directory for CNI 
   ansible.builtin.file: 
@@ -226,7 +226,7 @@
     owner: root 
     group: root 
     mode: '0644' 
-    remote_src: true
+    
 
 - name: Install Kubeadm Kubectl kubelet  
   ansible.builtin.dnf: 
