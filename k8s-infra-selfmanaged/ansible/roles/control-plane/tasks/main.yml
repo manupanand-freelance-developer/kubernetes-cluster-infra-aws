@@ -272,9 +272,12 @@
 
 ######################### Only for control plane ###############################  
 - name: Install K9s 
-  ansible.builtin.dnf: 
-   name: https://github.com/derailed/k9s/releases/download/v0.40.10/k9s_linux_amd64.rpm
-   state: present
+  ansible.builtin.unarchive: 
+   src: https://github.com/derailed/k9s/releases/download/v0.40.10/k9s_Linux_amd64.tar.gz
+   dest: "/usr/local/bin/"
+   owner: root 
+   group: root 
+   mode: '0744'
   
 
 - name: Get IP address 
