@@ -126,7 +126,7 @@
      dest: /usr/local/bin #check if it copy bin folder or files
      owner: root 
      group: root
-     remote_src: false
+     remote_src: true
      mode: '0744' 
 
 - name: Copy containerd service 
