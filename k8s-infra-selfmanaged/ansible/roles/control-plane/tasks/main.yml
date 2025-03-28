@@ -32,27 +32,25 @@
      state: restarted
      enabled: true
 
-# - name: Enable ports using firewalld
-#   ansible.posix.firewalld:
-#     port:
-#       - "22/tcp" # ssh 
-#       - "443/tcp" #https
-#       - "6443/tcp" #kubeapiserver
-#       - "2379-2380/tcp" #etcd
-#       - "10250/tcp"    # kubelet
-#       - "10259/tcp"  #kube-scheduler
-#       - "10257/tcp" #kube-control-manger
-#     state: enabled
-#     permanent: true
-  # loop: 
-  #   - "22/tcp" # ssh 
-  #   - "443/tcp" #https
-  #   - "6443/tcp" #kubeapiserver
-  #   - "2379-2380/tcp" #etcd
-  #   - "10250/tcp"    # kubelet
-  #   - "10259/tcp"  #kube-scheduler
-  #   - "10257/tcp" #kube-control-manger
-
+- name: Enable ports using firewalld
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    state: enabled
+    permanent: true
+    immediate: true #apply changes withiut reload
+  loop: 
+    - 22 # ssh 
+    - 443 #https
+    - 6443 #kubeapiserver
+    - 10250    # kubelet
+    - 10259 #kube-scheduler
+    - 10257 #kube-control-manger
+- name: Enable port range - 2379-2380 etcd
+  ansible.posix.firewalld: 
+     port: "2379-2380/tcp"
+     state: enabled 
+     permanent: true
+     immediate: true # apply without reload
 #############################################################
 # disable swap |disk partition
 # swapoff -a #disable al swap area
@@ -135,7 +133,7 @@
      dest: /usr/local/bin #check if it copy bin folder or files
      owner: root 
      group: root
-     remote_src: true 
+     remote_src: false
      mode: '0744' 
 
 - name: Copy containerd service 
