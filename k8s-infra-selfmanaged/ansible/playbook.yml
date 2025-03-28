@@ -1,5 +1,5 @@
 name: Configure dependencies for Kubernetes 
-host: all 
+hosts: all 
 become:  true 
 roles: 
   - "{{role_name}}"
