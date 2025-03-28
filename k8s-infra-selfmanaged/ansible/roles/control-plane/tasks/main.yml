@@ -183,7 +183,7 @@
 
 - name: Copy crictl.yaml file 
   ansible.builtin.copy: 
-    name: crictl.yaml 
+    src: crictl.yaml 
     dest: /etc/crictl.yaml 
     owner: root 
     group: root 
