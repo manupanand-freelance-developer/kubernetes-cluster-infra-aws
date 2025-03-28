@@ -89,13 +89,13 @@
 
 - name: Set up kubeconfig for ec2-user
   ansible.builtin.shell: |
-    mkdir -p ~/.kube
-    cp -i /etc/kubernetes/admin.conf ~/.kube/config
-    chown $(id -u):$(id -g) ~/.kube/config
+    mkdir -p /home/ec2-user/.kube
+    cp -i /etc/kubernetes/admin.conf /home/ec2-user/.kube/config
+    chown ec2-user:ec2-user /home/ec2-user/.kube/config
   args:
     executable: /bin/bash
   become: true
-  become_user: ec2-user
+
 
 - name: Install Calico 
   ansible.builtin.shell: |

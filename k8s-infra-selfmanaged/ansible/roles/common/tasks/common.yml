@@ -196,7 +196,8 @@
     - curl 
     - gnupg2 
     - ca-certificates 
-    - jq  
+    - jq 
+    - htop 
 
 - name: Copy kubernetes repo 
   ansible.builtin.copy: 
