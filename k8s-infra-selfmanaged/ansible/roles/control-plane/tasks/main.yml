@@ -123,11 +123,16 @@
 - name: Download and extract Containerd 
   ansible.builtin.unarchive: 
      src:  https://github.com/containerd/containerd/releases/download/v2.0.4/containerd-2.0.4-linux-amd64.tar.gz
-     dest: /usr/local/bin #check if it copy bin folder or files
+     dest: /tmp #check if it copy bin folder or files
      owner: root 
      group: root
      remote_src: true
      mode: '0744' 
+- name: Copy the files containerd to usr/local/bin
+  ansible.builtin.copy: 
+    src: /tmp/bin
+    dest: /home/ec2-user/ermo 
+
 
 - name: Copy containerd service 
   ansible.builtin.copy: 
