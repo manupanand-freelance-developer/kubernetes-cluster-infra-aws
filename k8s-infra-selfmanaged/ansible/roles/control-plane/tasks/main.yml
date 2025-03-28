@@ -33,11 +33,7 @@
      enabled: true
 
 - name: Enable ports using firewalld
-  ansible.posix.firewalld:
-    port: "{{ item }}/tcp"
-    state: enabled
-    permanent: true
-    immediate: true #apply changes withiut reload
+  ansible.builtin.shell: "firewall-cmd --zone=trusted -add-port={{ item }}/tcp --permanent && firewall-cmd --reload"
   loop: 
     - 22 # ssh 
     - 443 #https
@@ -46,11 +42,8 @@
     - 10259 #kube-scheduler
     - 10257 #kube-control-manger
 - name: Enable port range - 2379-2380 etcd
-  ansible.posix.firewalld: 
-     port: "2379-2380/tcp"
-     state: enabled 
-     permanent: true
-     immediate: true # apply without reload
+  ansible.builtin.shell: "firewall-cmd --zone=trusted -add-port=2379-2380/tcp --permanent && firewall-cmd --reload"
+      
 #############################################################
 # disable swap |disk partition
 # swapoff -a #disable al swap area
