@@ -73,12 +73,13 @@
     mode : '0644'
 
 - name:  Copy swapoff service file for permanent disable swap 
-  ansible.builtin.template: 
+  ansible.builtin.copy: 
     src: disableswap.service 
     dest: /etc/systemd/system/disableswap.service 
     owner:  root 
     group: root 
     mode: "0644"
+    remote_src: true
   
 - name: Enable disableswap| firewall| rsyslog service 
   ansible.builtin.systemd_service: 
@@ -92,20 +93,22 @@
      - rsyslog 
 
 - name: Copy k8s config to modules-load.d 
-  ansible.builtin.template: 
+  ansible.builtin.copy: 
     src: k8s.conf 
     dest: /etc/modules-load.d/k8s.conf 
     owner: root 
     group: root 
     mode: '0644' 
+    remote_src: true
 
 - name: Copy k8s config to sysctl 
-  ansible.builtin.template: 
+  ansible.builtin.copy: 
      src: k8ss.conf 
      dest: /etc/sysctl.d/k8ss.conf
      owner: root 
      group: root 
-     mode: '0644' 
+     mode: '0644'
+     remote_src: true 
 # forwarding ip4 and letting ip tables to see bridged traffic
 - name: Run modprobe and sysctl 
   ansible.builtin.shell: | 
@@ -136,11 +139,12 @@
      mode: '0744' 
 
 - name: Copy containerd service 
-  ansible.builtin.template: 
+  ansible.builtin.copy: 
     src: containerd.service 
     dest: /etc/systemd/system/containerd.service 
     owner: root 
     group: root 
+    remote_src: true
 
 - name: create containerd folder /etc/containerd
   ansible.builtin.file: 
@@ -151,12 +155,13 @@
      mode: '0755' 
 
 - name: Copy config file to /etc/containerd 
-  ansible.builtin.template: 
+  ansible.builtin.copy: 
     src: config.toml 
     dest: /etc/containerd/config.toml  
     owner: root 
     group: root 
     mode: '0644' 
+    remote_src: true
 
 - name: Start and enable containerd service
   ansible.builtin.systemd_service: 
@@ -179,12 +184,13 @@
     mode: '0744' 
 
 - name: Copy crictl.yaml file 
-  ansible.builtin.template: 
+  ansible.builtin.copy: 
     name: crictl.yaml 
     dest: /etc/crictl.yaml 
     owner: root 
     group: root 
     mode: '0644' 
+    remote_src: true 
 
 - name: Make directory for CNI 
   ansible.builtin.file: 
@@ -214,12 +220,13 @@
     - jq  
 
 - name: Copy kubernetes repo 
-  ansible.builtin.template: 
+  ansible.builtin.copy: 
     src: kubernetes.repo 
     dest: /etc/yum.repos.d/kubernetes.repo 
     owner: root 
     group: root 
     mode: '0644' 
+    remote_src: true
 
 - name: Install Kubeadm Kubectl kubelet  
   ansible.builtin.dnf: 
