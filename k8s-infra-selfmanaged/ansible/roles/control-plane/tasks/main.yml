@@ -34,7 +34,7 @@
 
 - name: Enable ports using firewalld
   ansible.posix.firewalld:
-    port: {{ item }}
+    port: "{{ item }}"
     state: enabled 
     permanent: true
   loop: 
