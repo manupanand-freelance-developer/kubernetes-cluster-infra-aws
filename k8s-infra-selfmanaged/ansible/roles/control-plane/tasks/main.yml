@@ -67,6 +67,7 @@
 - name: Create log file 
   ansible.builtin.file: 
     path: /var/log/disableswap.log 
+    state: present
     owner: root 
     group: root 
     mode : '0644'
