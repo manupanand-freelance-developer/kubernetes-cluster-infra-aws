@@ -139,7 +139,7 @@
 
 - name: create containerd folder /etc/containerd
   ansible.builtin.file: 
-     src:  /etc/containerd 
+     path:  /etc/containerd 
      state: directory 
      owner: root 
      group: root 
@@ -173,6 +173,7 @@
     owner: root 
     group: root 
     mode: '0744' 
+    remote_src: true
 
 - name: Copy crictl.yaml file 
   ansible.builtin.copy: 
@@ -185,7 +186,7 @@
 
 - name: Make directory for CNI 
   ansible.builtin.file: 
-     src: /opt/cni/bin 
+     path: /opt/cni/bin 
      state: directory 
      owner: root 
      group: root 
@@ -198,6 +199,7 @@
     owner: root 
     group: root 
     mode: '0744' 
+    remote_src: true
 
   
 - name: Install dependencies   
