@@ -242,8 +242,14 @@
     name: dnf-plugins-core 
     state: present  
 
+- name: Install Version lock
+  ansible.builtin.yum: 
+    name: python3-dnf-plugin-versionlock
+    state: present
+
+
 - name: Hold Kubeadm kubectl kubelet 
-  ansible.builtin.command: dnf versionlock add kubeadm kubectl kubelet 
+  ansible.builtin.shell: yum versionlock  kubeadm kubectl kubelet 
   register: lock_status 
   changed_when: "'added' in lock_status.stdout"
 
