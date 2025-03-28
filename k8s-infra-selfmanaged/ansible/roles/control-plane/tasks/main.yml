@@ -32,19 +32,19 @@
      state: restarted 
      enabled: true 
 
-- name: Enable ports using firewalld 
-  ansible.posix.firewalld: 
-     port: "{{ item }}"
-     state: enabled 
-     permanent: true
+- name: Enable ports using firewalld
+  ansible.posix.firewalld:
+    port: {{ item }}
+    state: enabled 
+    permanent: true
   loop: 
-     - "22/tcp" # ssh 
-     - "443/tcp" #https
-     - "6443/tcp" #kubeapiserver
-     - "2379-2380/tcp" #etcd
-     - "10250/tcp"    # kubelet
-     - "10259/tcp"  #kube-scheduler
-     - "10257/tcp" #kube-control-manger
+    - "22/tcp" # ssh 
+    - "443/tcp" #https
+    - "6443/tcp" #kubeapiserver
+    - "2379-2380/tcp" #etcd
+    - "10250/tcp"    # kubelet
+    - "10259/tcp"  #kube-scheduler
+    - "10257/tcp" #kube-control-manger
 
 #############################################################
 # disable swap |disk partition
