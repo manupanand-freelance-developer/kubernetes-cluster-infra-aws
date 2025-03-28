@@ -9,7 +9,7 @@
 - name: Setting prompt name
   ansible.builtin.lineinfile: 
      path: "/home/ec2-user/.bashrc"
-     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{role_name}}\[\e[0m\] \w \$ "'
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
      create: true 
      mode: '0644'
 
@@ -34,7 +34,7 @@
 
 - name: Enable ports using firewalld 
   ansible.posix.firewalld: 
-     port: "{{item}}"
+     port: "{{ item }}"
      state: enabled 
      permanent: true
   loop: 
@@ -134,7 +134,7 @@
     owner: root 
     group: root 
 
-- nmae: create containerd folder /etc/containerd
+- name: create containerd folder /etc/containerd
   ansible.builtin.file: 
      src:  /etc/containerd 
      state: directory 
@@ -143,7 +143,7 @@
      mode: '0755' 
 
 - name: Copy config file to /etc/containerd 
-  ansibel.builtin.template: 
+  ansible.builtin.template: 
     src: config.toml 
     dest: /etc/containerd/config.toml  
     owner: root 
@@ -197,7 +197,7 @@
   
 - name: Install dependencies   
   ansible.builtin.dnf: 
-    name: "{{item}}"
+    name: "{{ item }}"
     state: latest 
   loop: 
     - curl 
@@ -206,7 +206,7 @@
     - jq  
 
 - name: Copy kubernetes repo 
-  ansibel.builtin.template: 
+  ansible.builtin.template: 
     src: kubernetes.repo 
     dest: /etc/yum.repos.d/kubernetes.repo 
     owner: root 
@@ -215,7 +215,7 @@
 
 - name: Install Kubeadm Kubectl kubelet  
   ansible.builtin.dnf: 
-    name: "{{item}}"
+    name: "{{ item }}"
     state: latest 
   loop: 
     - kubeadm 
