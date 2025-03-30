@@ -187,6 +187,8 @@
     mode: '0744' 
     remote_src: true
 
+- name: Enable config manager
+  ansible.builtin.shell: yum-config-manager --enable extras
   
 - name: Install dependencies   
   ansible.builtin.dnf: 
