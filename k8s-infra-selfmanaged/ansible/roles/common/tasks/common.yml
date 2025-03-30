@@ -193,6 +193,7 @@
     name: "{{ item }}"
     state: latest 
   loop: 
+    - epel-release
     - curl 
     - gnupg2 
     - ca-certificates 
