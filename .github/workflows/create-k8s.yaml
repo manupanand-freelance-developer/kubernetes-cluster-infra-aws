@@ -1,4 +1,4 @@
-name: Infrastructure provisioning pipeline 
+name: Infrastructure K8s provisioning pipeline 
 on: 
   workflow_dispatch:
 jobs: 
@@ -14,7 +14,8 @@ jobs:
           secrets: | 
             tools/data/aws aws_user | AWS_USER;   
             tools/data/aws aws_password |AWS_PASSWORD
-         #   # tools/data/aws vault_token |VAULT_TOKEN
+            tools/data/aws aws_ami_id | AWS_AMI_ID 
+         #   # tools/data/aws vault_token |VAULT_TOKEN # give ami id on vault
         # tools is secretengine-check api 
       - uses: actions/checkout@v4
       - name: run terraform 
@@ -27,8 +28,30 @@ jobs:
         env:
             TF_VAR_aws_user: ${{env.AWS_USER}}
             TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
+            TF_VAR_aws_ami_id: ${{env.AWS_AMI_ID}}
             TF_VAR_role_name: "workstation"
-      
+
+  QA: 
+    runs-on: rhel_arm 
+    needs: DEV
+    environment: QA
+    steps: 
+      - name: Running code on QA 
+        run: echo "Code run successfully after test" 
+  UAT: 
+    runs-on: rhel_arm 
+    needs: QA
+    environment: UAT 
+    steps: 
+      - name: Running code on QA 
+        run: echo "Code run successfully after test" 
+  PROD: 
+    runs-on: rhel_arm 
+    needs: UAT
+    environment: PROD
+    steps: 
+      - name: Running code on QA 
+        run: echo "Code run successfully and deployed" 
      
            
           

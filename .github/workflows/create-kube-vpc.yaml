@@ -3,8 +3,9 @@ on:
   workflow_dispatch: 
 jobs: 
 # DEV-PLAN
-  DEV-APPLY:
+  DEV-VPC-APPLY:
     runs-on: rhel_arm
+    environment: DEV 
     steps: 
       - uses: actions/checkout@v4
       - name: Terraform init 
@@ -19,6 +20,24 @@ jobs:
         run: | 
           cd vpc-kube-infra
           terraform apply -var-file=env-dev/main.tfvars -auto-approve
-#QA
-# UAT
-#PROD
+  QA: 
+    runs-on: rhel_arm 
+    needs: DEV-VPC-APPLY
+    environment: QA
+    steps: 
+      - name: Running code on QA 
+        run: echo "Code run successfully after test" 
+  UAT: 
+    runs-on: rhel_arm 
+    needs: QA
+    environment: UAT 
+    steps: 
+      - name: Running code on QA 
+        run: echo "Code run successfully after test" 
+  PROD: 
+    runs-on: rhel_arm 
+    needs: UAT
+    environment: PROD
+    steps: 
+      - name: Running code on QA 
+        run: echo "Code run successfully and deployed" 
