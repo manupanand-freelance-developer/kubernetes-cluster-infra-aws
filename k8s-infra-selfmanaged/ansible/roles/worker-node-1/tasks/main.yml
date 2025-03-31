@@ -13,15 +13,18 @@
 # write fire wall here
 
 - name: Enable ports using firewalld
-  ansible.builtin.shell: "firewall-cmd --zone=trusted --add-port={{ item }}/tcp --permanent && firewall-cmd --reload"
+  ansible.builtin.shell: "firewall-cmd --zone=public --add-port={{ item }}/tcp --permanent && firewall-cmd --reload"
   loop: 
     - 22 # ssh 
     - 443 #https
-    - 10250    # kubelet
-    - 10256 #kube-scheduler
+ 
+
+- name: Enable port range - 10247-10260 node port
+  ansible.builtin.shell: "firewall-cmd --zone=public --add-port=10247-10260/tcp --permanent && firewall-cmd --reload" 
+
    
 - name: Enable port range - 30000-32767 node port
-  ansible.builtin.shell: "firewall-cmd --zone=trusted --add-port=30000-32767/tcp --permanent && firewall-cmd --reload" 
+  ansible.builtin.shell: "firewall-cmd --zone=public --add-port=30000-32767/tcp --permanent && firewall-cmd --reload" 
 
 
 - name: Enable firewalld
