@@ -18,11 +18,12 @@
   args:
    executable:  /bin/bash
 
-- name: Install firewalld  and rsyslog
+- name: Install firewalld  and rsyslog , net tools
   ansible.builtin.dnf:
     name: 
       - firewalld
       - rsyslog
+      - net-tools
     state: latest
 
 - name: Enable firewalld

@@ -23,9 +23,14 @@ module "control-plane" {
   private_security_group_id= module.security_groups.control_plane_security_group
   
 }# depend on null and wait here
+resource "time_sleep" "delay" {
+  depends_on = [ module.control-plane]
+  create_duration = "180s"
+}
 
 # module "worker" {
 #   source                    = "./modules/worker"
+#   depends_on                = [null_resource.wait]
 #   for_each                  = var.worker_instance
 #   env                       = var.env
 #   kube_subnet_id            = module.security_groups.kube_subnet_id
