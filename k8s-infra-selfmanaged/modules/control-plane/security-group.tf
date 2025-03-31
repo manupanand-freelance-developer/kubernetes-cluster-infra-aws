@@ -1,6 +1,6 @@
 resource "aws_security_group" "kube_control_plane" {
     description = "Security group for control plane"
-    name        =  "${var.env}-kube-control-plane-sg"
+    name        = "${var.env}-${var.name}-sg"
     vpc_id      =   data.aws_vpc.private_vpc.id 
   
 
@@ -41,7 +41,7 @@ resource "aws_security_group" "kube_control_plane" {
 
 
     tags={
-        Name="${var.env}-kube-control-plane-sg"
+        Name="${var.env}-${var.name}-sg"
     }
 }
 # TCP	Inbound	6443	    Kubernetes API server	    All

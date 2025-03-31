@@ -52,7 +52,7 @@
 
 resource "aws_security_group" "kube_worker" {
     description = "Security group for control plane"
-    name        =  "${var.env}-kube-control-plane-sg"
+    name        =  "${var.env}-${var.name}-sg"
     vpc_id      =   data.aws_vpc.private_vpc.id 
   
 
@@ -91,7 +91,7 @@ resource "aws_security_group" "kube_worker" {
     }
 
     tags={
-        Name="${var.env}-kube-worker-sg"
+        Name="${var.env}-${var.name}-sg"
     }
 
 }
