@@ -24,20 +24,20 @@ module "control-plane" {
   
 }# depend on null and wait here
 
-module "worker" {
-  source                    = "./modules/worker"
-  for_each                  = var.worker_instance
-  env                       = var.env
-  kube_subnet_id            = module.security_groups.kube_subnet_id
-  name                      = each.key
-  instance_type             = each.value["instance_type"]
-  policy_name               = each.value["policy_name"]
-  volume_size               = each.value["volume_size"]
-  aws_ami_id                = var.aws_ami_id
-  aws_user                  = var.aws_user 
-  aws_password              = var.aws_password
-  remote_ip                 = module.control-plane["master_node_1"].aws_control_plane_private_ip 
-  private_security_group_id = module.security_groups.worker_security_group
+# module "worker" {
+#   source                    = "./modules/worker"
+#   for_each                  = var.worker_instance
+#   env                       = var.env
+#   kube_subnet_id            = module.security_groups.kube_subnet_id
+#   name                      = each.key
+#   instance_type             = each.value["instance_type"]
+#   policy_name               = each.value["policy_name"]
+#   volume_size               = each.value["volume_size"]
+#   aws_ami_id                = var.aws_ami_id
+#   aws_user                  = var.aws_user 
+#   aws_password              = var.aws_password
+#   remote_ip                 = module.control-plane["master_node_1"].aws_control_plane_private_ip 
+#   private_security_group_id = module.security_groups.worker_security_group
   
-}
+# }
 

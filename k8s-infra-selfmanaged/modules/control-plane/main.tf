@@ -28,6 +28,17 @@ resource "aws_instance" "instance_control_plane" {
         AWS_PASSWORD = var.aws_password
         role_name    = "control-plane"
      }))
+       #check file
+    provisioner "remote-exec" {
+      inline = [ "while [ ! -e /tmp/execute.sh ]; do sleep 60 ; done" ]
+    }
+    connection {
+      type     = "ssh" 
+      user     = var.aws_user
+      password = var.aws_password
+      host     = self.public_ip 
+    }
+
     tags={
         Name="${var.name}-${var.env}-instance"
     }
