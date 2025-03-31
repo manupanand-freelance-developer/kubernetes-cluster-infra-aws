@@ -21,10 +21,11 @@ jobs:
       - name: run terraform 
       # export TF_VAR_vault_token=${{secrets.VAULT_TOKEN}}
         run: |
-          chmod +x k8s-infra-selfmanaged/k8s/control-plane.sh;
-          chmod +x k8s-infra-selfmanaged/k8s/worker.sh;
-          cd k8s-infra-selfmanaged;
-          terraform init -backend-config=env-dev/state.tfvars ; terraform plan -var-file=env-dev/main.tfvars;terraform apply -var-file=env-dev/main.tfvars -auto-approve
+          ls -la
+          #chmod +x k8s-infra-selfmanaged/k8s/control-plane.sh;
+          #chmod +x k8s-infra-selfmanaged/k8s/worker.sh;
+          #cd k8s-infra-selfmanaged;
+          #terraform init -backend-config=env-dev/state.tfvars ; terraform plan -var-file=env-dev/main.tfvars;terraform apply -var-file=env-dev/main.tfvars -auto-approve
         env:
             TF_VAR_aws_user: ${{env.AWS_USER}}
             TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
