@@ -2,7 +2,7 @@
 # control-plane resource
 
 resource "aws_instance" "instance_control_plane" {
-    depends_on               = [ aws_security_group.kube_control_plane ,aws_iam_instance_profile.iam_instance_profile]
+    depends_on               = [ aws_iam_instance_profile.iam_instance_profile]
     
     instance_type            = var.instance_type
     ami                      = var.aws_ami_id
