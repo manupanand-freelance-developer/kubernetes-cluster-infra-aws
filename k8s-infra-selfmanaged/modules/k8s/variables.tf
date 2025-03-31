@@ -19,3 +19,19 @@ variable "worker_ingress" {
 variable "worker_egress" {
   
 }
+variable "name" {
+  
+}
+variable "instance_type" {
+  
+}
+variable "policy_name" {
+  
+}
+variable "volume_size" {
+  
+}
+variable "aws_ami_id" {
+  
+}
+  

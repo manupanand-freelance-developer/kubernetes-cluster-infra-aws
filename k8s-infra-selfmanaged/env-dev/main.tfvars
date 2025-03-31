@@ -55,25 +55,23 @@ worker_egress={ # make it all onternt 0.0.0.0/0
     }
 }
 
-cp_instance={
+k8s_instance={
     control-plane={
-                instance_type="t3a.medium"  #intel
+                instance_type="t3.small"  #intel
                 policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess","AmazonEKSClusterPolicy"]
                 volume_size=30  
           }
-
-}
-worker_instance={
-    worker-node-1={
-                instance_type="t3a.medium" #intel
+     worker-node-1={
+                instance_type="t3.small" #intel
                 policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess","AmazonEKSWorkerNodePolicy"]
                 volume_size=30  
 
     }
      worker-node-2={
-                instance_type="t3a.medium"  #intel
+                instance_type="t3.small"  #intel
                 policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess","AmazonEKSWorkerNodePolicy"]
                 volume_size=30  
         
     }
+
 }

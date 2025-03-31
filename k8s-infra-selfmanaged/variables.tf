@@ -16,3 +16,9 @@ variable "worker_ingress" {
 variable "worker_egress" {
   
 }
+variable "k8s_instance" {
+  
+}
+variable "aws_ami_id" {
+  
+}
