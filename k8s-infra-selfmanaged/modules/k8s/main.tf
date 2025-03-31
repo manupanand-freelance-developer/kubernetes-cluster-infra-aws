@@ -63,6 +63,7 @@ resource "aws_instance" "instance_worker_node_1" {
         AWS_USER     = var.aws_user
         AWS_PASSWORD = var.aws_password
         role_name    = "worker-node-1"
+        remote_ip    = "123.128.168.12"
      }))
     tags={
         Name="${var.name}-${var.env}-instance"
