@@ -1,10 +1,7 @@
 variable "env" {
   
 }
-variable "vpc_name" {
-  
-}
-variable "subnet_name" {
+variable "kube_subnet_id" {
   
 }
 
