@@ -4,7 +4,7 @@
 export AWS_USER=$TF_VAR_aws_user
 export AWS_PASSWORD=$TF_VAR_aws_password
 export role_name=$TF_VAR_role_name
-export remote_ip=$TF_VAR_remote_ip
+# export remote_ip=$TF_VAR_remote_ip
 LOG_FILE="/var/log/startup_script.log"
 sudo touch $LOG_FILE
 sudo chmod 666 $LOG_FILE
@@ -50,15 +50,15 @@ sudo dnf install -y ansible-core | tee -a $LOG_FILE
 
 sleep 120
 
-while ! sshpass -p "${AWS_PASSWORD}" ssh -o StrictHostKeyChecking=no "${AWS_USER}"@"${remote_ip}" "[ -e /tmp/execute.sh ]"; do
-    echo "File not found, waiting..." 
-    sleep 10 
-done
-sleep 30
-sshpass -p "${AWS_PASSWORD}" scp -o StrictHostKeyChecking=no "${AWS_USER}"@"${remote_ip}":/tmp/execute.sh /tmp/execute.sh | tee -a /var/log/startup_script.log
-sleep 30
-sudo chmod +x /tmp/execute.sh  | tee -a /var/log/startup_script.log
+# while ! sshpass -p "${AWS_PASSWORD}" ssh -o StrictHostKeyChecking=no "${AWS_USER}"@"${remote_ip}" "[ -e /tmp/execute.sh ]"; do
+#     echo "File not found, waiting..." 
+#     sleep 10 
+# done
+# sleep 30
+# sshpass -p "${AWS_PASSWORD}" scp -o StrictHostKeyChecking=no "${AWS_USER}"@"${remote_ip}":/tmp/execute.sh /tmp/execute.sh | tee -a /var/log/startup_script.log
+# sleep 30
+# sudo chmod +x /tmp/execute.sh  | tee -a /var/log/startup_script.log
 
-sudo /bin/bash /tmp/execute.sh | tee -a /var/log/startup_script.log 
+# sudo /bin/bash /tmp/execute.sh | tee -a /var/log/startup_script.log 
 
 #ansible-pull -i localhost, -U https://github.com/manupanand-freelance-developer/kubernetes-cluster-infra-aws  k8s-infra-selfmanaged/ansible/playbook.yml  -e ansible_user=${AWS_USER} -e ansible_password=${AWS_PASSWORD} -e role_name=${role_name} &>>$LOG_FILE
