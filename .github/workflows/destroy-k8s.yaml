@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 jobs:
   DEV: 
-    runs-on: X64
+    runs-on: rhel_arm 
     environment:
     steps:
       - name: Import secrets hashicorp 
