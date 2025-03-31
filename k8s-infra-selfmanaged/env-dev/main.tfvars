@@ -26,7 +26,7 @@ cp_ingress={
 cp_egress={  # remove outbound rule make it  0.0.0.0/0
     kubelet_api         =  {
                             port="10250"
-                            ]#cidr of kube
+                            #cidr of kube
                             }
     node_port           =  {
                             port="30000-32767"
