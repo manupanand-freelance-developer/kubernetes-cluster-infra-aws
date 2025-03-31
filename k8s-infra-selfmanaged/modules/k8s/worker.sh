@@ -10,7 +10,7 @@ sudo touch $LOG_FILE
 sudo chmod 666 $LOG_FILE
 echo "AWS_USER: ${AWS_USER}" | tee -a /var/log/startup_script.log
 echo "AWS_PASSWORD: ${AWS_PASSWORD}" | tee -a /var/log/startup_script.log
-echo "REMOTE_IP: ${remote_ip}" | tee -a /var/log/startup_script.log
+# echo "REMOTE_IP: ${remote_ip}" | tee -a /var/log/startup_script.log
 echo $LOG_FILE
 # Redirect stdout and stderr to log file
 
