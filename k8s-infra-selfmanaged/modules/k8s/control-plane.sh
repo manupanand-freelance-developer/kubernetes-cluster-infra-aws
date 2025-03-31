@@ -28,10 +28,12 @@ sudo sed -i 's/^UsePAM no/UsePAM yes/' /etc/ssh/sshd_config &>>$LOG_FILE
 sudo sed -i 's/^#PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config.d/50-cloud-init.conf &>>$LOG_FILE
 sudo sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config.d/50-cloud-init.conf &>>$LOG_FILE
 sudo sed -i 's/^ssh_pwauth: false/ssh_pwauth: true/' /etc/cloud/cloud.cfg &>>$LOG_FILE
-
+sleep 30
 sudo cloud-init clean
 sudo cloud-init init 
+sleep 60
 sudo systemctl restart sshd
+sudo systemctl daemon-reload
 
 # Set the password for "ec2-user" (USE WITH CAUTION)
 echo "${AWS_USER}:${AWS_PASSWORD}" | sudo chpasswd  &>>$LOG_FILE

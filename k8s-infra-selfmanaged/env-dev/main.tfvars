@@ -1,6 +1,6 @@
 env="dev"
 vpc={
-   vpc_name     ="dev-vpc-private"
+   vpc_name     ="dev-private-vpc"
    subnet_name  ="dev-kube-subnet"
 }
 cp_ingress={
@@ -67,11 +67,11 @@ k8s_instance={
                 volume_size=30  
 
     }
-     worker-node-2={
-                instance_type="t3.small"  #intel
-                policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess","AmazonEKSWorkerNodePolicy"]
-                volume_size=30  
+    #  worker-node-2={
+    #             instance_type="t3.small"  #intel
+    #             policy_name=["AmazonEC2FullAccess","AmazonSSMFullAccess","AmazonS3ReadOnlyAccess","AmazonEKSWorkerNodePolicy"]
+    #             volume_size=30  
         
-    }
+    # }
 
 }

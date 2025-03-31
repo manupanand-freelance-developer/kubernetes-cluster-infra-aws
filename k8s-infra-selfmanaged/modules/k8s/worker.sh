@@ -61,4 +61,4 @@ sudo chmod +x /tmp/execute.sh  | tee -a /var/log/startup_script.log
 
 sudo /bin/bash /tmp/execute.sh | tee -a /var/log/startup_script.log 
 
-ansible-pull -i localhost, -U https://github.com/manupanand/learn-terraform  revice/k8s-self-manged-data-pass-test/ansible/playbook.yml  -e ansible_user=${AWS_USER} -e ansible_password=${AWS_PASSWORD} -e role_name=${role_name} | tee -a $LOG_FILE
+#ansible-pull -i localhost, -U https://github.com/manupanand-freelance-developer/kubernetes-cluster-infra-aws  k8s-infra-selfmanaged/ansible/playbook.yml  -e ansible_user=${AWS_USER} -e ansible_password=${AWS_PASSWORD} -e role_name=${role_name} &>>$LOG_FILE
