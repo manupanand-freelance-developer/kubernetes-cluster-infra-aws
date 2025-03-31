@@ -36,7 +36,7 @@ module "worker" {
   aws_ami_id                = var.aws_ami_id
   aws_user                  = var.aws_user 
   aws_password              = var.aws_password
-  remote_ip                 = module.control-plane.aws_control_plane_private_ip 
+  remote_ip                 = module.control-plane["master_node_1"].aws_control_plane_private_ip 
   private_security_group_id = module.security_groups.worker_security_group
   
 }
