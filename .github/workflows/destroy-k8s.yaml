@@ -18,8 +18,8 @@ jobs:
             tools/data/aws aws_ami_id | AWS_AMI_ID  
       - name: Destroying the Infrastructure
         run: |
-          ls -la 
-          cd tools-infra ; cd  terraform ; terraform destroy -auto-approve
+         
+          cd k8s-infra-selfmanaged; terraform destroy -var-file=env-dev/main.tfvars -auto-approve
         env: 
           TF_VAR_aws_user: ${{secrets.AWS_USER}}
           TF_VAR_aws_password: ${{secrets.AWS_PASSWORD}}

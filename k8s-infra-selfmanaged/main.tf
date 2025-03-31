@@ -13,5 +13,7 @@ module "kube" {
   policy_name       = each.value["policy_name"]
   volume_size       = each.value["volume_size"]
   aws_ami_id        = var.aws_ami_id
+  aws_user          = var.aws_user 
+  aws_password      = var.aws_password 
   
 }

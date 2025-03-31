@@ -22,3 +22,9 @@ variable "k8s_instance" {
 variable "aws_ami_id" {
   
 }
+variable "aws_user" {
+  
+}
+variable "aws_password" {
+  
+}

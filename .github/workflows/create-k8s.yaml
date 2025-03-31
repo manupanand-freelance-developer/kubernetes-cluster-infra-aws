@@ -21,15 +21,14 @@ jobs:
       - name: run terraform 
       # export TF_VAR_vault_token=${{secrets.VAULT_TOKEN}}
         run: |
-          chmod +x tools-infra/terraform/infra/userdata.sh
-          cd tools-infra; cd terraform
-          cat  infra/userdata.sh
-          terraform init  ; terraform apply -auto-approve
+          chmod +x k8s-infra-selfmanaged/k8s/control-plane.sh
+          chmod +x k8s-infra-selfmanaged/k8s/worker.sh
+          cd k8s-infra-selfmanaged
+          terraform init -backend-config=env-dev/state.tfvars ; terraform plan -var-file=env-dev/main.tfvars;terraform apply -var-file=env-dev/main.tfvars -auto-approve
         env:
             TF_VAR_aws_user: ${{env.AWS_USER}}
             TF_VAR_aws_password: ${{env.AWS_PASSWORD}}
             TF_VAR_aws_ami_id: ${{env.AWS_AMI_ID}}
-            TF_VAR_role_name: "workstation"
 
   QA: 
     runs-on: rhel_arm 

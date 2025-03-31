@@ -22,11 +22,18 @@ resource "aws_instance" "instance_control_plane" {
     root_block_device {
         volume_size           =var.volume_size 
     }  
+    #user data commands
+    user_data = base64encode(templatefile("${path.module}/control-plane.sh",{
+        AWS_USER     = var.aws_user
+        AWS_PASSWORD = var.aws_password
+        role_name    = "control-plane"
+     }))
     tags={
         Name="${var.name}-${var.env}-instance"
     }
   
 }
+# delay and check
 
 
 # worker resource 
