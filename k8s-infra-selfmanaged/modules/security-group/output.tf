@@ -5,5 +5,5 @@ output "worker_security_group" {
   value = aws_security_group.kube_worker.id
 }
 output "kube_subnet_id" {
-  value = data.aws_subnet.kube_subnet
+  value = data.aws_subnet.kube_subnet.id
 }
