@@ -37,7 +37,7 @@ resource "aws_instance" "instance_control_plane" {
 
 
 # worker resource 
-resource "aws_instance" "instance_control_plane" {
+resource "aws_instance" "instance_worker_node_1" {
     depends_on               = [ aws_security_group.kube_worker ,aws_iam_instance_profile.iam_instance_profile]
     
     instance_type            = var.instance_type
