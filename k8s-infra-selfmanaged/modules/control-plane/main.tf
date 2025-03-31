@@ -6,9 +6,9 @@ resource "aws_instance" "instance_control_plane" {
     
     instance_type            = var.instance_type
     ami                      = var.aws_ami_id
-    subnet_id                = data.aws_subnet.kube_subnet.id   
+    subnet_id                = var.kube_subnet_id  
     iam_instance_profile     = aws_iam_instance_profile.iam_instance_profile.name
-    vpc_security_group_ids   = [aws_security_group.kube_control_plane.id] 
+    vpc_security_group_ids   = [var.private_security_group_id] 
 
     #instance option
     instance_market_options {
