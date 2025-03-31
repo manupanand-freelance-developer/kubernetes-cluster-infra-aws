@@ -1,8 +1,8 @@
 env="dev"
-vpc={
-   vpc_name     ="dev-private-vpc"
-   subnet_name  ="dev-kube-subnet"
-}
+
+vpc_name     ="dev-private-vpc"
+subnet_name  ="dev-kube-subnet"
+
 cp_ingress={
  
     kube_api_server          =   {

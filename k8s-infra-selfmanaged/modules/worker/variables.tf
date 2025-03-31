@@ -7,18 +7,7 @@ variable "vpc_name" {
 variable "subnet_name" {
   
 }
-# variable "cp_ingress" {
-  
-# }
-# variable "cp_egress" {
-  
-# }
-variable "worker_ingress" {
-  
-}
-variable "worker_egress" {
-  
-}
+
 variable "name" {
   
 }
@@ -41,5 +30,8 @@ variable "aws_password" {
   
 }
 variable "remote_ip" {
+  
+}
+variable "private_security_group_id" {
   
 }

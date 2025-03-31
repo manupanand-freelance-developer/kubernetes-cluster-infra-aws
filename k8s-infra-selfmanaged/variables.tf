@@ -1,9 +1,13 @@
 variable "env" {
   
 }
-variable "vpc" {
+variable "vpc_name" {
   
 }
+variable "subnet_name"  {
+  
+}
+
 variable "cp_ingress" {
   
 }
