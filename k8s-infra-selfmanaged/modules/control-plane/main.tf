@@ -30,7 +30,7 @@ resource "aws_instance" "instance_control_plane" {
      }))
        #check file
     provisioner "remote-exec" {
-      inline = [ "while [ ! -e /tmp/execute.sh ]; do sleep 60 ; done" ]
+      inline = [ "while [ ! -e /tmp/join.sh ]; do sleep 60 ; done" ]
     }
     connection {
       type     = "ssh" 

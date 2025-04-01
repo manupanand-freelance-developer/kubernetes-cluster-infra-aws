@@ -103,17 +103,24 @@
 - name: Copy  and get join command 
   ansible.builtin.copy: 
    content: |
-    #/bin/bash
-    echo "Executing join command"
-    "{{ join_command.stdout }}" 
+      #!/bin/bash
+      echo "Executing join command"
+      {{ join_command.stdout }} 
    dest: "/tmp/join.sh"
    mode: '0777'
 
-- name: Install Calico 
-  ansible.builtin.shell: |
-    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/tigera-operator.yaml  --validate=false
-    curl https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/custom-resources.yaml -O 
-    kubectl create -f custom-resources.yaml --validate=false
-    
+- name: Pause for 300 seconds
+  ansible.builtin.pause:
+    seconds: 300
 
+# - name: Install Calico 
+#   ansible.builtin.shell: |
+#     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/tigera-operator.yaml  --validate=false
+    
+    
+# - name: Install Calico 
+#   ansible.builtin.shell: |
+#     curl https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/custom-resources.yaml -O 
+#     kubectl create -f custom-resources.yaml --validate=false
+    
     
