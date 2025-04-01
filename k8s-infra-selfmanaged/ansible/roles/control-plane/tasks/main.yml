@@ -6,6 +6,7 @@
 #crictl ps #similar to docker ps for containerd
 ######################################################################################################
 
+
 # including common task
 - name: Including common task 
   ansible.builtin.include_role:  
@@ -13,6 +14,19 @@
     tasks_from: common
 
 
+- name: Setting prompt name
+  ansible.builtin.lineinfile:
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
+     create: true
+     mode: '0644'
+
+- name: Source bashrc
+  ansible.builtin.shell: |
+      source ~/.bashrc
+  args:
+   executable:  /bin/bash
+   
 - name: Enable ports using firewalld
   ansible.builtin.shell: "firewall-cmd --zone=public --add-port={{ item }}/tcp --permanent && firewall-cmd --reload"
   loop: 
@@ -89,12 +103,16 @@
 
 - name: Set up kubeconfig for ec2-user
   ansible.builtin.shell: |
-    mkdir -p /home/ec2-user/.kube
-    cp -i /etc/kubernetes/admin.conf /home/ec2-user/.kube/config
-    chown ec2-user:ec2-user /home/ec2-user/.kube/config
+    rm -rf $HOME/.kube || true
+    mkdir -p $HOME/.kube
+    cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    chown $(id -u):$(id -g) $HOME/.kube/config
   args:
     executable: /bin/bash
   become: true
+
+- name: Restart kubelet
+  anisble.builtin.shell: sudo systemctl restart kubelet
   
 - name: generate join token again 
   ansible.builtin.shell:  "kubeadm token create --print-join-command"
@@ -109,18 +127,17 @@
    dest: "/tmp/join.sh"
    mode: '0777'
 
-- name: Pause for 300 seconds
-  ansible.builtin.pause:
-    seconds: 300
 
-# - name: Install Calico 
-#   ansible.builtin.shell: |
-#     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/tigera-operator.yaml  --validate=false
+- name: Install Calico 
+  ansible.builtin.shell: |
+    cd /tmp
+    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/tigera-operator.yaml  --validate=false
     
     
-# - name: Install Calico 
-#   ansible.builtin.shell: |
-#     curl https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/custom-resources.yaml -O 
-#     kubectl create -f custom-resources.yaml --validate=false
+- name: Install Calico 
+  ansible.builtin.shell: |
+    cd /tmp
+    curl https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/custom-resources.yaml -O 
+    kubectl create -f custom-resources.yaml --validate=false
     
     

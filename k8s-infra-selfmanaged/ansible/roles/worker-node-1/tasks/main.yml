@@ -10,6 +10,18 @@
     name: common 
     tasks_from: common
 
+- name: Setting prompt name
+  ansible.builtin.lineinfile:
+     path: "/home/ec2-user/.bashrc"
+     line: 'export PS1="\[\e[1;31m\]\u\[\e[0m\]@\[\e[1;34m\]{{ role_name }}\[\e[0m\] \w \$ "'
+     create: true
+     mode: '0644'
+
+- name: Source bashrc
+  ansible.builtin.shell: |
+      source ~/.bashrc
+  args:
+   executable:  /bin/bash
 # write fire wall here
 
 - name: Enable ports using firewalld
@@ -52,3 +64,5 @@
   ansible.builtin.shell: | 
      /bin/bash   /tmp/join.sh
      
+- name: restart kubelet 
+  ansible.builtin.shell: systemctl restart kubelet
