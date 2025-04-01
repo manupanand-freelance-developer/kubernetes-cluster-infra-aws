@@ -30,7 +30,7 @@ resource "time_sleep" "delay" {
 
 module "worker" {
   source                    = "./modules/worker"
-  depends_on                = [null_resource.wait]
+  depends_on                = [time_sleep.delay]
   for_each                  = var.worker_instance
   env                       = var.env
   kube_subnet_id            = module.security_groups.kube_subnet_id
