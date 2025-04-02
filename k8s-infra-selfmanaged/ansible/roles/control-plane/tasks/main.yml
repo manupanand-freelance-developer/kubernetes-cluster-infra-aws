@@ -123,6 +123,7 @@
     executable: /bin/bash
   become: true
   register: test
+  ignore_errors: true 
 
 - name: Ansible debug
   ansible.builtin.debug: 
@@ -138,6 +139,7 @@
 - name: generate join token again 
   ansible.builtin.shell:  "kubeadm token create --print-join-command"
   register: join_command
+  ignore_errors: true  
 
 - name: Copy  and get join command 
   ansible.builtin.copy: 
@@ -161,6 +163,7 @@
     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/tigera-operator.yaml  --validate=false
   args: 
     executable: /bin/bash
+  ignore_errors: true 
     
     
 - name: Install Calico 
@@ -169,4 +172,5 @@
     kubectl create -f custom-resources.yaml --validate=false
   args: 
     executable: /bin/bash
+  ignore_errors: true 
     
