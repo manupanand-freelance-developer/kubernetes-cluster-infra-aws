@@ -145,7 +145,7 @@ resource "aws_security_group" "kube_worker" {
 # allow security groups to communicate 
 # attach each port with security group
 
-resource "aws_vpc_security_group_ingress_rule" "control_plane_from_worker" {
+resource "aws_vpc_security_group_ingress_rule" "general_control_plane_from_worker" {
    depends_on = [ aws_security_group.kube_control_plane, aws_security_group.kube_worker ]
    
  
@@ -155,7 +155,7 @@ resource "aws_vpc_security_group_ingress_rule" "control_plane_from_worker" {
   security_group_id             = aws_security_group.kube_worker.id# the initiater worker
   referenced_security_group_id  = aws_security_group.kube_control_plane.id#destinaton security group control plane
 }
-resource "aws_vpc_security_group_ingress_rule" "worker_from_control_plane" {
+resource "aws_vpc_security_group_ingress_rule" "general_worker_from_control_plane" {
    depends_on = [ aws_security_group.kube_control_plane, aws_security_group.kube_worker ]
  
   from_port                     =  6443
