@@ -163,7 +163,9 @@
     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/tigera-operator.yaml  --validate=false
   args: 
     executable: /bin/bash
+  become: true
   ignore_errors: true 
+  register: tigera
     
     
 - name: Install Calico 
@@ -173,4 +175,11 @@
   args: 
     executable: /bin/bash
   ignore_errors: true 
-    
+  register: resource
+  become: true
+
+- name: debug nodes
+  ansible.builtin.debug: 
+    msg: |
+      "{{ tigera }}" 
+      "{{ resource }}"
