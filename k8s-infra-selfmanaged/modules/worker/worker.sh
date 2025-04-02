@@ -55,10 +55,10 @@ while ! sshpass -p "${AWS_PASSWORD}" ssh -o StrictHostKeyChecking=no "${AWS_USER
     sleep 10 
 done
 sleep 30
-sshpass -p "${AWS_PASSWORD}" scp -o StrictHostKeyChecking=no "${AWS_USER}"@"${remote_ip}":/tmp/join.sh /tmp/execute.sh | tee -a /var/log/startup_script.log
+sshpass -p "${AWS_PASSWORD}" scp -o StrictHostKeyChecking=no "${AWS_USER}"@"${remote_ip}":/tmp/join.sh /tmp/join.sh | tee -a /var/log/startup_script.log
 sleep 30
-sudo chmod +x /tmp/execute.sh  | tee -a /var/log/startup_script.log
+sudo chmod +x /tmp/join.sh  | tee -a /var/log/startup_script.log
 
-sudo /bin/bash /tmp/execute.sh | tee -a /var/log/startup_script.log 
+sudo /bin/bash /tmp/join.sh | tee -a /var/log/startup_script.log 
 
 ansible-pull -i localhost, -U https://github.com/manupanand-freelance-developer/kubernetes-cluster-infra-aws  k8s-infra-selfmanaged/ansible/playbook.yml  -e ansible_user=${AWS_USER} -e ansible_password=${AWS_PASSWORD} -e role_name=${role_name} | tee -a /var/log/startup_script.log 
