@@ -238,7 +238,7 @@
   register: crictl_config 
 
 - name: Give permission to crictl 
-  ansible.builtin.shell: chmod 775 /var/run/containerd
+  ansible.builtin.shell: chmod -R 775 /var/run/containerd
 
 # sudo crictl ps
 
