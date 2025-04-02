@@ -167,7 +167,18 @@
   ignore_errors: true 
   register: tigera
     
-    
+- name: Wait for Calico CRDs to be available
+  ansible.builtin.shell: |
+    until kubectl get crds | grep -q "installations.operator.tigera.io"; do
+      echo "Waiting for Calico CRDs to be created..."
+      sleep 5
+    done
+  args:
+    executable: /bin/bash
+  become: true
+  register: wait_for_crds
+  changed_when: false
+  
 - name: Install Calico 
   ansible.builtin.shell: |
     curl https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/custom-resources.yaml -O 
@@ -181,5 +192,6 @@
 - name: debug nodes
   ansible.builtin.debug: 
     msg: |
-      "{{ tigera }}" 
+      "{{ tigera }}"
+      "{{ wait_for_crds }}"
       "{{ resource }}"

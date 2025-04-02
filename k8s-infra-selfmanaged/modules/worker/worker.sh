@@ -50,7 +50,7 @@ sudo dnf install -y ansible-core | tee -a $LOG_FILE
 
 sleep 120
 
-while ! sshpass -p "${AWS_PASSWORD}" ssh -o StrictHostKeyChecking=no "${AWS_USER}"@"${remote_ip}" "[ -e /tmp/execute.sh ]"; do
+while ! sshpass -p "${AWS_PASSWORD}" ssh -o StrictHostKeyChecking=no "${AWS_USER}"@"${remote_ip}" "[ -e /tmp/join.sh ]"; do
     echo "File not found, waiting..." 
     sleep 10 
 done
