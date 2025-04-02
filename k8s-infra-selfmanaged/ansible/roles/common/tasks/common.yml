@@ -5,7 +5,9 @@
 #"PS1="MASTER->"
 #crictl ps #similar to docker ps for containerd
 ######################################################################################################
-
+- name: kubeadm reset 
+  ansible.builtin.shell: kubeadm reset 
+  ignore_errors: true 
 
 - name: Install firewalld  and rsyslog , net tools
   ansible.builtin.dnf:

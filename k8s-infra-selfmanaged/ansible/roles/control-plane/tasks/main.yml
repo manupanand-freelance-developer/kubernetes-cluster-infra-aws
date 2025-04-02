@@ -122,9 +122,9 @@
     executable: /bin/bash
   become: true
 
-- name: Restart kubelet
-  anisble.builtin.shell: | 
-     systemctl restart kubelet
+# - name: Restart kubelet
+#   anisble.builtin.shell: | 
+#      systemctl restart kubelet
   
 - name: generate join token again 
   ansible.builtin.shell:  "kubeadm token create --print-join-command"
