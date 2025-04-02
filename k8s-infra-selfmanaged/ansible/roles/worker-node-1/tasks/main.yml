@@ -31,6 +31,7 @@
     - 443 #https
     - 179 
     - 5473
+    - 8080
  
 
 - name: Enable port range - 10247-10260 node port

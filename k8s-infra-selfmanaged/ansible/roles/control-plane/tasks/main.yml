@@ -35,6 +35,7 @@
     - 6443 #kubeapiserver
     - 179  #calico 
     - 5473 #calico  30000-32767
+    - 8080
 
 - name: Enable port range - 30000-32767 worker
   ansible.builtin.shell: "firewall-cmd --zone=public --add-port=30000-32767/tcp --permanent && firewall-cmd --reload" 
@@ -121,10 +122,18 @@
   args:
     executable: /bin/bash
   become: true
+  register: test
 
-# - name: Restart kubelet
-#   anisble.builtin.shell: | 
-#      systemctl restart kubelet
+- name: Ansible debug
+  ansible.builtin.debug: 
+    msg: "{{ test }}"
+
+- name: Restart kubelet 
+  ansible.builtin.systemd_service: 
+    name: kubelet 
+    state: restarted 
+    enabled: true 
+    daemon_reload: true 
   
 - name: generate join token again 
   ansible.builtin.shell:  "kubeadm token create --print-join-command"
@@ -139,17 +148,25 @@
    dest: "/tmp/join.sh"
    mode: '0777'
 
+- name: Kubectl debug
+  ansible.builtin.shell: kubectl get nodes 
+  register: nodes
 
+- name: debug nodes
+  ansible.builtin.debug: 
+    msg: "{{ nodes }}"
+    
 - name: Install Calico 
   ansible.builtin.shell: |
-    cd /tmp
     kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/tigera-operator.yaml  --validate=false
+  args: 
+    executable: /bin/bash
     
     
 - name: Install Calico 
   ansible.builtin.shell: |
-    cd /tmp
     curl https://raw.githubusercontent.com/projectcalico/calico/v3.29.3/manifests/custom-resources.yaml -O 
     kubectl create -f custom-resources.yaml --validate=false
-    
+  args: 
+    executable: /bin/bash
     

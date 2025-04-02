@@ -174,8 +174,6 @@ resource "aws_vpc_security_group_ingress_rule" "control_plane_from_worker" {
    description = "IP in IP protocol 4"
    
  
-  from_port                     = 0
-  to_port                       = 0
   ip_protocol                   = "4"
   security_group_id             = aws_security_group.kube_worker.id# the initiater worker
   referenced_security_group_id  = aws_security_group.kube_control_plane.id#destinaton security group control plane
@@ -185,9 +183,7 @@ resource "aws_vpc_security_group_egress_rule" "control_plane_to_worker" {
 
    description = "IP in IP protocol 4"
    
- 
-  from_port                     = 0
-  to_port                       = 0
+
   ip_protocol                   = "4"
   security_group_id             = aws_security_group.kube_control_plane.id# the initiater worker
   referenced_security_group_id  = aws_security_group.kube_worker.id#destinaton security group control plane
@@ -198,10 +194,7 @@ resource "aws_vpc_security_group_ingress_rule" "worker_from_control_plane" {
    depends_on = [ aws_security_group.kube_control_plane, aws_security_group.kube_worker ]
 
    description = "IP in IP protocol 4"
-   
- 
-  from_port                     = 0
-  to_port                       = 0
+
   ip_protocol                   = "4"
   security_group_id             = aws_security_group.kube_control_plane.id# the initiater worker whonsend 
   referenced_security_group_id  = aws_security_group.kube_worker.id#destinaton security group control plane
@@ -210,10 +203,7 @@ resource "aws_vpc_security_group_egress_rule" "worker_to_control_plane" {
    depends_on = [ aws_security_group.kube_control_plane, aws_security_group.kube_worker ]
 
    description = "IP in IP protocol 4"
-   
- 
-  from_port                     = 0
-  to_port                       = 0
+
   ip_protocol                   = "4"
   security_group_id             = aws_security_group.kube_worker.id# the initiater worker
   referenced_security_group_id  = aws_security_group.kube_control_plane.id#destinaton security group control plane
