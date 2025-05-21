@@ -67,7 +67,6 @@
     daemon_reload: true 
 
 
-# git pull;ansible-playbook -i localhost, -e ansible_user=ec2-user -e ansible_password=aws@SECAPPLY2025 -e role_name=control-plane  playbook.yml    -vv
 - name: Join control plane node 
   ansible.builtin.shell: | 
      /bin/bash   /tmp/join.sh
